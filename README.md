@@ -4,13 +4,14 @@ University e-commerce & merchandise platform backend for CSX4110. Staff and
 students authenticate through the university's Azure AD; the backend issues
 its own JWT with an RBAC role claim, generates AI-assisted product
 descriptions, and both exposes and consumes a peer service-to-service API for
-department-based discount verification. Full design in
-[`../proposal/CampusStore_Project_Proposal.pdf`](../proposal/CampusStore_Project_Proposal.pdf).
+department-based discount verification.
 
-Runs as a second, isolated app alongside the Lab's `backend-crud-api` on the
+Runs as a second, isolated app alongside an existing course Lab API on the
 same Azure VM — new port (4002), new MySQL database (`campus_store`), new PM2
 process (`campus-store-api`), new Nginx location (`/campus-store/`) — without
 touching the Lab's existing `/content` or `/api` routes.
+
+![Architecture](docs/architecture.png)
 
 ## Live deployment
 
@@ -19,7 +20,11 @@ touching the Lab's existing `/content` or `/api` routes.
 
 Free DuckDNS subdomain pointed at the VM's public IP, with a Let's Encrypt
 certificate issued via `certbot --nginx` (auto-renews). Plain HTTP redirects
-to HTTPS. The VM has to actually be running for either link to respond.
+to HTTPS. The VM has to actually be running for either link to respond —
+if it's off, follow [Local development](#local-development) to run the whole
+stack locally.
+
+![Admin dashboard, logged in as STAFF](docs/admin-dashboard.png)
 
 ## Admin frontend (Product/Category CRUD)
 
@@ -45,7 +50,7 @@ separate from the API's `/campus-store/` proxy block:
 
 Node.js 20 + Express, Prisma + MySQL, JWT + RBAC, Azure AD (MSAL) for login,
 Azure Key Vault for secrets, OpenAI for description generation, PM2 behind
-Nginx for deployment — mirroring the pattern proven in `../backend-crud-api`.
+Nginx for deployment — mirroring the pattern proven in the course Lab API.
 
 ## Local development
 
